@@ -1,0 +1,14 @@
+{
+    "name": "internations/testing-component",
+    "description": "A collection of test helpers for Symfony 2 projects",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lars Strojny",
+            "email": "lars@strojny.net"
+        }
+    ],
+    "require": {
+
+    }
+}
