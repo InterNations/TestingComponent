@@ -3,9 +3,9 @@
 A collection of test helpers to ease testing of Symfony2 projects.
 
 
-### Example usage
+### The base test class
 
-```
+```php
 <?php
 use InterNations\Component\Testing\AbstractTestCase;
 
@@ -18,4 +18,23 @@ class MyTest extends AbstractTestCase
         $this->sut = $this->getSimpleMock('MyComponent');
     }
 }
+```
+
+### Accessing restricted members
+```php
+<?php
+use InterNations\Component\Testing\AccessTrait;
+
+
+class MyTest ...
+{
+    use AccessTrait;
+
+    public function testSomething()
+    {
+        $this->setNonPublicProperty($this->sut, 'privateProperty', 'value');
+        $this->callNonPublicMethod($this->sut, 'protectedMethod', ['arg1', 'arg2']);
+    }
+}
+
 ```
