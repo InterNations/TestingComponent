@@ -8,7 +8,9 @@
             "email": "lars@strojny.net"
         }
     ],
-    "require": {
-
+    "autoload": {
+        "psr-0": {
+            "InterNations\\Component\\Testing": "src/"
+        }
     }
 }
