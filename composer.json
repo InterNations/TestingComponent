@@ -6,6 +6,22 @@
         {
             "name": "Lars Strojny",
             "email": "lars@strojny.net"
+        },
+        {
+            "name": "Michael Weinrich",
+            "email": "michael.weinrich@internations.org"
+        },
+        {
+            "name": "Marc Jakubowski",
+            "email": "marc.jakubowski@internations.org"
+        },
+        {
+            "name": "Max Beutel",
+            "email": "max.beutel@internations.org"
+        },
+        {
+            "name": "Hans Bernhard Streit",
+            "email": "hans.streit@internations.org"
         }
     ],
     "autoload": {
