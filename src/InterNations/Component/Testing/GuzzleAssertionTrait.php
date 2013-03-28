@@ -1,7 +1,8 @@
 <?php
 namespace InterNations\Component\Testing;
 
-use Guzzle\Http\Plugin\MockPlugin;
+use Guzzle\Http\Message\Response;
+use Guzzle\Plugin\Mock\MockPlugin;
 use Guzzle\Http\Message\Request;
 
 trait GuzzleAssertionTrait
@@ -25,5 +26,18 @@ trait GuzzleAssertionTrait
 
         $this->assertSame($method, $request->getMethod());
         $this->assertSame($url, $request->getUrl());
+    }
+
+    /**
+     * Create Guzzle response from a file
+     *
+     * @param string $file
+     * @param integer $responseCode
+     * @param array $headers
+     * @return Response
+     */
+    protected function createGuzzleResponseFromFile($file, $responseCode = 200, $headers = [])
+    {
+        return new Response($responseCode, $headers, file_get_contents($file));
     }
 }
