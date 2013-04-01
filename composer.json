@@ -30,6 +30,8 @@
         }
     },
     "require-dev": {
+        "symfony/dom-crawler": "dev-master",
+        "symfony/css-selector": "dev-master",
         "internations/kodierungsregelwerksammlung": "dev-master"
     },
     "suggest": {
