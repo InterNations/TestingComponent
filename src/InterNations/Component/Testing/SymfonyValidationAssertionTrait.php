@@ -21,7 +21,7 @@ trait SymfonyValidationAssertionTrait
     {
         if (!isset(self::$metadataMap[$className])) {
             $factory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
-            self::$metadataMap[$className] = $factory->getClassMetadata($className);
+            self::$metadataMap[$className] = $factory->getMetadataFor($className);
         }
 
         $metadata = self::$metadataMap[$className];
