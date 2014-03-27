@@ -1,4 +1,4 @@
-# Test helpers for Symfony projects [![Build Status](https://travis-ci.org/InterNations/TestingComponent.png?branch=master)](https://travis-ci.org/InterNations/TestingComponent)
+# Test helpers for Symfony projects [![Build Status](https://travis-ci.org/InterNations/TestingComponent.svg)](https://travis-ci.org/InterNations/TestingComponent)
 
 A collection of test helpers to ease testing of Symfony2 projects.
 
