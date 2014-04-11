@@ -33,7 +33,7 @@
         "symfony/dom-crawler": "dev-master",
         "symfony/css-selector": "dev-master",
         "internations/kodierungsregelwerksammlung": "dev-master",
-        "phpunit/phpunit": "3.*"
+        "phpunit/phpunit": "~4"
     },
     "suggest": {
         "symfony/dom-crawler": "Needed to use DomCrawlerAssertionTrait",
