@@ -7,7 +7,7 @@ trait AccessTrait
 {
     /**
      * @param object|string $object
-     * @param string g$propertyName
+     * @param string $propertyName
      * @param string|null $reflectionClass
      * @return mixed
      */
@@ -42,7 +42,7 @@ trait AccessTrait
      *
      * @param object $object
      * @param string $methodName
-     * @param array  $args
+     * @param array $args
      * @return mixed
      */
     protected function callNonPublicMethod($object, $methodName, array $args = [])
