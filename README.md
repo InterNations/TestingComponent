@@ -1,4 +1,5 @@
-# Test helpers for Symfony projects [![Build Status](https://travis-ci.org/InterNations/TestingComponent.svg)](https://travis-ci.org/InterNations/TestingComponent) [![Dependency Status](https://www.versioneye.com/user/projects/5347af6afe0d070896000135/badge.png)](https://www.versioneye.com/user/projects/5347af6afe0d070896000135)
+# Test helpers for Symfony projects
+[![Build Status](https://travis-ci.org/InterNations/TestingComponent.svg)](https://travis-ci.org/InterNations/TestingComponent) [![Dependency Status](https://www.versioneye.com/user/projects/5347af6afe0d070896000135/badge.png)](https://www.versioneye.com/user/projects/5347af6afe0d070896000135)
 
 A collection of test helpers to ease testing of Symfony2 projects.
 
