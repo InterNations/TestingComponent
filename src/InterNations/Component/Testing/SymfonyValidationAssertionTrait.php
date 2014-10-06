@@ -56,7 +56,7 @@ trait SymfonyValidationAssertionTrait
     protected function assertValidationCascades($className, $propertyName, $allowCascadeConstraintOnly = true)
     {
         $propertyMetadata = $this->getPropertyConstraints($className, $propertyName);
-        $this->assertTrue($propertyMetadata->cascaded);
+        $this->assertTrue($propertyMetadata->isCascaded());
 
         if ($allowCascadeConstraintOnly) {
             $this->assertCount(
