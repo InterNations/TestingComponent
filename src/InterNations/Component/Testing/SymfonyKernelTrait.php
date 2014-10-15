@@ -7,7 +7,7 @@ trait SymfonyKernelTrait
     {
         $key = '__SYMFONY_TEST_KERNEL';
         if (!empty($options)) {
-            $key .= '_' . md5(serialize($options));
+            $key .= '_' . hash('sha256', (serialize($options)));
         }
 
         if (!isset($GLOBALS[$key])) {
