@@ -79,6 +79,18 @@ trait DomCrawlerAssertionTrait
      * @param string $attribute
      * @param string $message
      */
+    public function assertHtmlSelectorAttributeContains($expected, $document, $selector, $attribute, $message = '')
+    {
+        $this->assertContains($expected, (new Crawler($document))->filter($selector)->attr($attribute), $message);
+    }
+
+    /**
+     * @param string $expected
+     * @param string $document
+     * @param string $selector
+     * @param string $attribute
+     * @param string $message
+     */
     public function assertNotHtmlSelectorAttribute($expected, $document, $selector, $attribute, $message = '')
     {
         try {
