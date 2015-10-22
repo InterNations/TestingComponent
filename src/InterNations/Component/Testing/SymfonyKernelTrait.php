@@ -8,7 +8,7 @@ trait SymfonyKernelTrait
 
     public function bootLazyKernel(array $options = [])
     {
-        $this->kernelKey = '__SYMFONY_TEST_KERNEL';
+        $this->kernelKey = '__SYMFONY_TEST_KERNEL__' . static::$class;
 
         if (!empty($options)) {
             $this->kernelKey .= '_' . hash('sha256', (serialize($options)));
