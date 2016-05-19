@@ -40,6 +40,7 @@ trait ContainerTestTrait
         }
 
         $locator = new FileLocator($this->getContainerFixturePath());
+
         switch (substr($file, -3)) {
             case 'xml':
                 $loader = new XmlFileLoader($container, $locator);
@@ -69,6 +70,7 @@ trait ContainerTestTrait
     protected function getContainerFixturePath()
     {
         static $fixturePath;
+
         if ($fixturePath === null) {
             $class = new ReflectionObject($this);
             $fixturePath = dirname($class->getFileName()) . '/../Fixtures';
@@ -93,6 +95,7 @@ trait ContainerTestTrait
     protected function getBundle()
     {
         static $bundle;
+
         if ($bundle === null) {
             preg_match('/(?P<ns>.*\\\\(?P<name>.+)Bundle)\\\\.*/', get_class($this), $matches);
             $bundle = [$matches['ns'], $matches['name']];

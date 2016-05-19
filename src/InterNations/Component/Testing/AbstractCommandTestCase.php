@@ -1,7 +1,6 @@
 <?php
 namespace InterNations\Component\Testing;
 
-use InterNations\Component\Testing\AbstractTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 

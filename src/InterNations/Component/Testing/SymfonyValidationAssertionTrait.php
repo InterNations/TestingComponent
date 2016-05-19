@@ -1,9 +1,9 @@
 <?php
 namespace InterNations\Component\Testing;
 
-use Symfony\Component\Validator\Mapping\Loader\AnnotationLoader;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
+use Symfony\Component\Validator\Mapping\Loader\AnnotationLoader;
 
 trait SymfonyValidationAssertionTrait
 {
@@ -94,6 +94,7 @@ trait SymfonyValidationAssertionTrait
         $constraintClassName = $this->getConstraintClassName($constraintClassName);
 
         $executed = false;
+
         foreach ($propertyMetadata->constraints as $constraint) {
             $this->assertNotSame(
                 get_class($constraint),
@@ -134,19 +135,22 @@ trait SymfonyValidationAssertionTrait
         $constraintClassName = $this->getConstraintClassName($constraintClassName);
 
         $expectedValidationGroups = $expectedValidationGroups ? (array) $expectedValidationGroups : ['Default'];
-        if (in_array('Default', $expectedValidationGroups)) {
+
+        if (in_array('Default', $expectedValidationGroups, true)) {
             $shortClassName = substr($className, strrpos($className, '\\') + 1);
             $expectedValidationGroups[] = $shortClassName;
         }
 
         $matched = false;
         $currentPropertyNumber = 1;
+
         foreach ($propertyMetadata->constraints as $constraint) {
             if (get_class($constraint) === $constraintClassName) {
                 if ($propertyNumber > $currentPropertyNumber) {
                     $currentPropertyNumber++;
                     continue;
                 }
+
                 foreach ($properties as $constraintProperty => $value) {
                     $this->assertObjectHasAttribute(
                         $constraintProperty,
@@ -185,9 +189,11 @@ trait SymfonyValidationAssertionTrait
 
                 $groupError = 'Constraint "%s" for property "%s" is expected to be bound to group "%s", but is '
                             . 'limited to %s';
+
                 foreach ((array) $expectedValidationGroups as $expectedValidationGroup) {
-                    $this->assertTrue(
-                        in_array($expectedValidationGroup, $constraint->groups),
+                    $this->assertContains(
+                        $expectedValidationGroup,
+                        $constraint->groups,
                         sprintf(
                             $groupError,
                             $constraintClassName,

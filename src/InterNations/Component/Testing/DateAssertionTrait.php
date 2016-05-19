@@ -19,9 +19,11 @@ trait DateAssertionTrait
         }
 
         $this->assertInstanceOf(get_class($expected), $actual);
+
         if ($notSame) {
             $this->assertNotSame($expected, $actual);
         }
+
         $this->assertSame($expected->format('Y-m-d H:i:s'), $actual->format('Y-m-d H:i:s'));
         $this->assertSame($expected->getTimezone()->getName(), $actual->getTimezone()->getName());
     }
