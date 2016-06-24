@@ -12,6 +12,11 @@ trait MockTrait
      */
     protected function getSimpleMock($className, array $methods = [])
     {
+        if (method_exists($this, 'createMock')) {
+            trigger_error(E_USER_DEPRECATED, 'Directly use createMock() instead');
+            return $this->createMock($className);
+        }
+
         return $this->getMock($className, $methods, [], '', false, false, true, false);
     }
 }
