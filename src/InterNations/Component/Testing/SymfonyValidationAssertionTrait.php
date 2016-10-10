@@ -2,14 +2,13 @@
 namespace InterNations\Component\Testing;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
+use Symfony\Component\Validator\Mapping\ClassMetadataInterface;
+use Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory;
 use Symfony\Component\Validator\Mapping\Loader\AnnotationLoader;
 
 trait SymfonyValidationAssertionTrait
 {
-    /**
-     * @var array
-     */
+    /** @var ClassMetadataInterface[] */
     private static $metadataMap = [];
 
     /**
@@ -20,18 +19,18 @@ trait SymfonyValidationAssertionTrait
     private function getPropertyConstraints($className, $propertyName)
     {
         if (!isset(self::$metadataMap[$className])) {
-            $factory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
+            $factory = new LazyLoadingMetadataFactory(new AnnotationLoader(new AnnotationReader()));
             self::$metadataMap[$className] = $factory->getMetadataFor($className);
         }
 
         $metadata = self::$metadataMap[$className];
 
         $this->assertTrue(
-            $metadata->hasMemberMetadatas($propertyName),
+            $metadata->hasPropertyMetadata($propertyName),
             sprintf('No assertions defined for property "%s" in class "%s"', $propertyName, $className)
         );
 
-        $propertyMetadatas = $metadata->getMemberMetadatas($propertyName);
+        $propertyMetadatas = $metadata->getPropertyMetadata($propertyName);
         $this->assertCount(1, $propertyMetadatas);
 
         return current($propertyMetadatas);
@@ -44,8 +43,8 @@ trait SymfonyValidationAssertionTrait
     private function getConstraintClassName($constraintClassName)
     {
         return strpos($constraintClassName, '\\') === false
-             ? 'Symfony\\Component\\Validator\\Constraints\\' . $constraintClassName
-             : $constraintClassName;
+            ? 'Symfony\\Component\\Validator\\Constraints\\' . $constraintClassName
+            : $constraintClassName;
     }
 
     /**
