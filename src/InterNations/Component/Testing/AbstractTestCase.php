@@ -1,9 +1,9 @@
 <?php
 namespace InterNations\Component\Testing;
 
-use PHPUnit_Framework_TestCase as BaseTestCase;
+use PHPUnit\Framework\TestCase;
 
-abstract class AbstractTestCase extends BaseTestCase
+abstract class AbstractTestCase extends TestCase
 {
     use MockTrait;
 }
