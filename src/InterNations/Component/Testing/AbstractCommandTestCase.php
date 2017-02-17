@@ -3,35 +3,29 @@ namespace InterNations\Component\Testing;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractCommandTestCase extends AbstractTestCase
 {
-    /**
-     * @var CommandTester
-     */
+    /** @var CommandTester */
     protected $commandTester;
 
-    /**
-     * @var ContainerInterface
-     */
+    /** @var ContainerInterface */
     protected $container;
 
-    /**
-     * @var KernelInterface
-     */
+    /** @var KernelInterface */
     protected $kernel;
 
-    /**
-     * @var Application
-     */
+    /** @var Application */
     protected $application;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->container = $this->getSimpleMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $this->kernel = $this->getSimpleMock('Symfony\Component\HttpKernel\KernelInterface');
+        $this->container = $this->createMock(ContainerInterface::class);
+        $this->kernel = $this->createMock(KernelInterface::class);
         $this->kernel
             ->expects($this->any())
             ->method('getContainer')
