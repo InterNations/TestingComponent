@@ -27,7 +27,6 @@ abstract class AbstractCommandTestCase extends AbstractTestCase
         $this->container = $this->createMock(ContainerInterface::class);
         $this->kernel = $this->createMock(KernelInterface::class);
         $this->kernel
-            ->expects($this->any())
             ->method('getContainer')
             ->will($this->returnValue($this->container));
 

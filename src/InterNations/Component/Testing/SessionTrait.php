@@ -9,7 +9,6 @@ trait SessionTrait
     protected function initSessionState(Session $session, array $sessionData)
     {
         $session
-            ->expects($this->any())
             ->method('get')
             ->will(
                 $this->returnCallback(
@@ -23,7 +22,6 @@ trait SessionTrait
                 )
             );
         $session
-            ->expects($this->any())
             ->method('has')
             ->will(
                 $this->returnCallback(
