@@ -25,10 +25,10 @@ abstract class AbstractCommandTestCase extends AbstractTestCase
         parent::setUp();
 
         $this->container = $this->createMock(ContainerInterface::class);
-        $this->kernel = $this->createMock(KernelInterface::class);
-        $this->kernel
-            ->method('getContainer')
-            ->will($this->returnValue($this->container));
+        $this->kernel = $this->createConfiguredMock(
+            KernelInterface::class,
+            ['getContainer' => $this->container, 'getBundles' => []]
+        );
 
         $this->application = new Application($this->kernel);
     }
