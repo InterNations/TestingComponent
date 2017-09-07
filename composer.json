@@ -34,7 +34,7 @@
         "symfony/css-selector": "~3",
         "internations/kodierungsregelwerksammlung": "dev-master",
         "phpunit/phpunit": "~6",
-        "doctrine/annotations": "1.2.*",
+        "doctrine/annotations": "^1.2",
         "symfony/validator": "~3"
     },
     "suggest": {
