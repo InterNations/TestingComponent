@@ -9,30 +9,25 @@ trait DateAssertionTrait
      * Compares two dates for equality
      *
      * @param DateTime|string $expected
-     * @param DateTime $actual
-     * @param boolean $notSame
      */
-    public function assertSameDate($expected, DateTime $actual, $notSame = false)
+    protected static function assertSameDate($expected, DateTime $actual, bool $notSameInstance = false): void
     {
         if (!$expected instanceof DateTime) {
             $expected = new DateTime($expected, $actual->getTimezone());
         }
 
-        $this->assertInstanceOf(get_class($expected), $actual);
+        self::assertInstanceOf(get_class($expected), $actual);
 
-        if ($notSame) {
-            $this->assertNotSame($expected, $actual);
+        if ($notSameInstance) {
+            self::assertNotSame($expected, $actual);
         }
 
-        $this->assertSame($expected->format('Y-m-d H:i:s'), $actual->format('Y-m-d H:i:s'));
-        $this->assertSame($expected->getTimezone()->getName(), $actual->getTimezone()->getName());
+        self::assertSame($expected->format('Y-m-d H:i:s'), $actual->format('Y-m-d H:i:s'));
+        self::assertSame($expected->getTimezone()->getName(), $actual->getTimezone()->getName());
     }
 
-    /**
-     * @param DateTime $date
-     */
-    public function assertDate(DateTime $date)
+    protected function assertDate(DateTime $date): void
     {
-        $this->assertSame($this->expectedDate->format('Y-m-d H:i:s'), $date->format('Y-m-d H:i:s'));
+        self::assertSame($this->expectedDate->format('Y-m-d H:i:s'), $date->format('Y-m-d H:i:s'));
     }
 }

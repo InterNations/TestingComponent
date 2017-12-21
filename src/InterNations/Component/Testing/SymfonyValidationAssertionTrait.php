@@ -5,18 +5,14 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Validator\Mapping\ClassMetadataInterface;
 use Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory;
 use Symfony\Component\Validator\Mapping\Loader\AnnotationLoader;
+use Symfony\Component\Validator\Mapping\PropertyMetadataInterface;
 
 trait SymfonyValidationAssertionTrait
 {
     /** @var ClassMetadataInterface[] */
     private static $metadataMap = [];
 
-    /**
-     * @param string $className
-     * @param string $propertyName
-     * @return mixed
-     */
-    private function getPropertyConstraints($className, $propertyName)
+    private function getPropertyConstraints(string $className, string $propertyName): ?PropertyMetadataInterface
     {
         if (!isset(self::$metadataMap[$className])) {
             $factory = new LazyLoadingMetadataFactory(new AnnotationLoader(new AnnotationReader()));
@@ -36,23 +32,18 @@ trait SymfonyValidationAssertionTrait
         return current($propertyMetadatas);
     }
 
-    /**
-     * @param string $constraintClassName
-     * @return string
-     */
-    private function getConstraintClassName($constraintClassName)
+    private function getConstraintClassName(string $constraintClassName): string
     {
         return strpos($constraintClassName, '\\') === false
             ? 'Symfony\\Component\\Validator\\Constraints\\' . $constraintClassName
             : $constraintClassName;
     }
 
-    /**
-     * @param string $className
-     * @param string $propertyName
-     * @param boolean $allowCascadeConstraintOnly
-     */
-    protected function assertValidationCascades($className, $propertyName, $allowCascadeConstraintOnly = true)
+    protected function assertValidationCascades(
+        string $className,
+        string $propertyName,
+        bool $allowCascadeConstraintOnly = true
+    ): void
     {
         $propertyMetadata = $this->getPropertyConstraints($className, $propertyName);
         $this->assertTrue($propertyMetadata->isCascaded());
@@ -66,14 +57,7 @@ trait SymfonyValidationAssertionTrait
         }
     }
 
-    /**
-     * Asserts the count of symfony validators
-     *
-     * @param string $className
-     * @param string $propertyName
-     * @param integer $count
-     */
-    protected function assertConstraintCount($className, $propertyName, $count)
+    protected function assertConstraintCount(string $className, string $propertyName, int $count): void
     {
         $propertyMetadata = $this->getPropertyConstraints($className, $propertyName);
 
@@ -82,12 +66,12 @@ trait SymfonyValidationAssertionTrait
 
     /**
      * Asserts a certain symfony validation constraint is not defined for property
-     *
-     * @param string $className
-     * @param string $propertyName
-     * @param string $constraintClassName
      */
-    protected function assertConstraintNotForProperty($className, $propertyName, $constraintClassName)
+    protected function assertConstraintNotForProperty(
+        string $className,
+        string $propertyName,
+        string $constraintClassName
+    ): void
     {
         $propertyMetadata = $this->getPropertyConstraints($className, $propertyName);
         $constraintClassName = $this->getConstraintClassName($constraintClassName);
@@ -115,20 +99,17 @@ trait SymfonyValidationAssertionTrait
     /**
      * Asserts symfony validation rules
      *
-     * @param string $className
-     * @param string $propertyName
-     * @param string $constraintClassName
-     * @param array $properties
+     * @param string[] $expectedPropertiesMap Key/value map of expected properties
      * @param array|string $expectedValidationGroups
      */
     protected function assertConstraintForProperty(
-        $className,
-        $propertyName,
-        $constraintClassName,
-        array $properties = [],
+        string $className,
+        string $propertyName,
+        string $constraintClassName,
+        array $expectedPropertiesMap = [],
         $expectedValidationGroups = null,
-        $propertyNumber = 1
-    )
+        int $propertyIndex = 1
+    ): void
     {
         $propertyMetadata = $this->getPropertyConstraints($className, $propertyName);
         $constraintClassName = $this->getConstraintClassName($constraintClassName);
@@ -141,16 +122,16 @@ trait SymfonyValidationAssertionTrait
         }
 
         $matched = false;
-        $currentPropertyNumber = 1;
+        $currentPropertyIndex = 1;
 
         foreach ($propertyMetadata->constraints as $constraint) {
             if (get_class($constraint) === $constraintClassName) {
-                if ($propertyNumber > $currentPropertyNumber) {
-                    $currentPropertyNumber++;
+                if ($propertyIndex > $currentPropertyIndex) {
+                    $currentPropertyIndex++;
                     continue;
                 }
 
-                foreach ($properties as $constraintProperty => $value) {
+                foreach ($expectedPropertiesMap as $constraintProperty => $value) {
                     $this->assertObjectHasAttribute(
                         $constraintProperty,
                         $constraint,

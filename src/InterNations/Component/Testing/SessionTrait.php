@@ -6,7 +6,8 @@ use Exception;
 
 trait SessionTrait
 {
-    protected function initSessionState(Session $session, array $sessionData)
+    /** @param mixed[] $sessionData */
+    protected function initSessionState(Session $session, array $sessionData): void
     {
         $session
             ->method('get')

@@ -20,7 +20,7 @@ abstract class AbstractCommandTestCase extends AbstractTestCase
     /** @var Application */
     protected $application;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

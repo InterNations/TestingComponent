@@ -3,7 +3,7 @@ namespace InterNations\Component\Testing;
 
 trait TimingTrait
 {
-    protected function assertTiming($maxDurationInMs, callable $callable, $iterations = 20)
+    protected function assertTiming(float $maxDurationInMs, callable $callable, int $iterations = 20): void
     {
         $duration = 0;
 

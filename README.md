@@ -14,12 +14,6 @@ use InterNations\Component\Testing\AbstractTestCase;
 
 class MyTest extends AbstractTestCase
 {
-    private $sut;
-
-    public function setUp()
-    {
-        $this->sut = $this->getSimpleMock('MyComponent');
-    }
 }
 ```
 

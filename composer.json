@@ -35,10 +35,14 @@
         "internations/kodierungsregelwerksammlung": "dev-master",
         "phpunit/phpunit": "~6",
         "doctrine/annotations": "^1.2",
-        "symfony/validator": "~3"
+        "symfony/validator": "~3",
+        "symfony/dependency-injection": "^4.0",
+        "symfony/config": "^4.0",
+        "symfony/http-kernel": "^4.0",
+        "symfony/framework-bundle": "^4.0"
     },
     "suggest": {
-        "symfony/dom-crawler": "Needed to use DomCrawlerAssertionTrait",
+        "symfony/dom-crawler": "Necessary to use DomCrawlerAssertionTrait",
         "symfony/css-selector": "Dependency for symfony/dom-crawler"
     },
     "require": {

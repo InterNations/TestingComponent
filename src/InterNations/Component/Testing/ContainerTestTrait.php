@@ -2,6 +2,9 @@
 namespace InterNations\Component\Testing;
 
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -12,7 +15,16 @@ use ReflectionObject;
 
 trait ContainerTestTrait
 {
-    protected function createContainer($file = null, $debug = false, array $config = [], array $definitions = [])
+    /**
+     * @param mixed[] $config
+     * @param Definition[] $definitions
+     */
+    protected function createContainer(
+        ?string $file = null,
+        bool $debug = false,
+        array $config = [],
+        array $definitions = []
+    ): ContainerBuilder
     {
         $container = new ContainerBuilder(new ParameterBag(['kernel.debug' => $debug]));
         $container->registerExtension($this->getContainerExtension());
@@ -33,7 +45,7 @@ trait ContainerTestTrait
         return $container;
     }
 
-    private function loadFromFile(ContainerBuilder $container, $file)
+    private function loadFromFile(ContainerBuilder $container, string $file): void
     {
         if ($file === null) {
             return;
@@ -62,12 +74,13 @@ trait ContainerTestTrait
         $loader->load($file);
     }
 
-    protected function getCompilerPasses()
+    /** @return CompilerPassInterface[] */
+    protected function getCompilerPasses(): array
     {
         return [];
     }
 
-    protected function getContainerFixturePath()
+    protected function getContainerFixturePath(): string
     {
         static $fixturePath;
 
@@ -79,20 +92,21 @@ trait ContainerTestTrait
         return $fixturePath;
     }
 
-    protected function getContainerConfigPrefix()
+    protected function getContainerConfigPrefix(): string
     {
         return 'inter_nations_' . strtolower($this->getBundle()[1]);
     }
 
-    protected function getContainerExtension()
+    protected function getContainerExtension(): ExtensionInterface
     {
-        list($namespace, $name) = $this->getBundle();
+        [$namespace, $name] = $this->getBundle();
         $className = $namespace . '\\DependencyInjection\\InterNations' . $name . 'Extension';
 
         return new $className;
     }
 
-    protected function getBundle()
+    /** @return string[] */
+    protected function getBundle(): array
     {
         static $bundle;
 

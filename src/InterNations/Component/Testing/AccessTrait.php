@@ -7,17 +7,15 @@ trait AccessTrait
 {
     /**
      * @param object|string $object
-     * @param string $propertyName
-     * @param string|null $reflectionClass
      * @return mixed
      */
-    public function getNonPublicProperty($object, $propertyName, $reflectionClass = null)
+    protected static function getNonPublicProperty($object, string $propertyName, ?string $reflectionClass = null)
     {
         $reflectionClass = $reflectionClass ?: $object;
         $reflected = new ReflectionClass($reflectionClass);
         $property = $reflected->getProperty($propertyName);
         $property->setAccessible(true);
-        
+
         return $property->getValue($object);
     }
 
@@ -25,14 +23,16 @@ trait AccessTrait
      * Set a non-public member of an object or class
      *
      * @param object|string $object
-     * @param string $propertyName
      * @param mixed $value
-     * @param string|null $reflectionClass
      */
-    protected function setNonPublicProperty($object, $propertyName, $value, $reflectionClass = null)
+    protected static function setNonPublicProperty(
+        $object,
+        string $propertyName,
+        $value,
+        ?string $reflectionClass = null
+    ): void
     {
-        $reflectionClass = $reflectionClass ?: $object;
-        $reflected = new ReflectionClass($reflectionClass);
+        $reflected = new ReflectionClass($reflectionClass ?: $object);
         $property = $reflected->getProperty($propertyName);
         $property->setAccessible(true);
         $property->setValue($object, $value);
@@ -41,12 +41,10 @@ trait AccessTrait
     /**
      * Call private and protected methods on an object
      *
-     * @param object $object
-     * @param string $methodName
-     * @param array $args
+     * @param mixed[] $args
      * @return mixed
      */
-    protected function callNonPublicMethod($object, $methodName, array $args = [])
+    protected static function callNonPublicMethod(object $object, string $methodName, array $args = [])
     {
         $class = new ReflectionClass($object);
         $method = $class->getMethod($methodName);
