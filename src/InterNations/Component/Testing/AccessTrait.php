@@ -41,6 +41,7 @@ trait AccessTrait
     /**
      * Call private and protected methods on an object
      *
+     * @param object|string $object
      * @param mixed[] $args
      * @return mixed
      */
