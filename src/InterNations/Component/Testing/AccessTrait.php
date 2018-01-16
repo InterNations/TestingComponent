@@ -44,7 +44,7 @@ trait AccessTrait
      * @param mixed[] $args
      * @return mixed
      */
-    protected static function callNonPublicMethod(object $object, string $methodName, array $args = [])
+    protected static function callNonPublicMethod($object, string $methodName, array $args = [])
     {
         $class = new ReflectionClass($object);
         $method = $class->getMethod($methodName);
