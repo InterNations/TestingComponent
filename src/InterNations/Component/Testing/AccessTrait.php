@@ -41,10 +41,11 @@ trait AccessTrait
     /**
      * Call private and protected methods on an object
      *
+     * @param object|string $object
      * @param mixed[] $args
      * @return mixed
      */
-    protected static function callNonPublicMethod(object $object, string $methodName, array $args = [])
+    protected static function callNonPublicMethod($object, string $methodName, array $args = [])
     {
         $class = new ReflectionClass($object);
         $method = $class->getMethod($methodName);
