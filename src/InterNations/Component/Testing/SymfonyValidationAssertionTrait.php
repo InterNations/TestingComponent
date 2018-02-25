@@ -12,7 +12,7 @@ trait SymfonyValidationAssertionTrait
     /** @var ClassMetadataInterface[] */
     private static $metadataMap = [];
 
-    private function getPropertyConstraints(string $className, string $propertyName): ?PropertyMetadataInterface
+    private static function getPropertyConstraints(string $className, string $propertyName): ?PropertyMetadataInterface
     {
         if (!isset(self::$metadataMap[$className])) {
             $factory = new LazyLoadingMetadataFactory(new AnnotationLoader(new AnnotationReader()));
@@ -21,35 +21,35 @@ trait SymfonyValidationAssertionTrait
 
         $metadata = self::$metadataMap[$className];
 
-        $this->assertTrue(
+        self::assertTrue(
             $metadata->hasPropertyMetadata($propertyName),
             sprintf('No assertions defined for property "%s" in class "%s"', $propertyName, $className)
         );
 
         $propertyMetadatas = $metadata->getPropertyMetadata($propertyName);
-        $this->assertCount(1, $propertyMetadatas);
+        self::assertCount(1, $propertyMetadatas);
 
         return current($propertyMetadatas);
     }
 
-    private function getConstraintClassName(string $constraintClassName): string
+    private static function getConstraintClassName(string $constraintClassName): string
     {
         return strpos($constraintClassName, '\\') === false
             ? 'Symfony\\Component\\Validator\\Constraints\\' . $constraintClassName
             : $constraintClassName;
     }
 
-    protected function assertValidationCascades(
+    protected static function assertValidationCascades(
         string $className,
         string $propertyName,
         bool $allowCascadeConstraintOnly = true
     ): void
     {
-        $propertyMetadata = $this->getPropertyConstraints($className, $propertyName);
-        $this->assertTrue($propertyMetadata->isCascaded());
+        $propertyMetadata = self::getPropertyConstraints($className, $propertyName);
+        self::assertTrue($propertyMetadata->isCascaded());
 
         if ($allowCascadeConstraintOnly) {
-            $this->assertCount(
+            self::assertCount(
                 0,
                 $propertyMetadata->constraints,
                 'No constraint definitions allowed for cascaded property.'
@@ -57,29 +57,29 @@ trait SymfonyValidationAssertionTrait
         }
     }
 
-    protected function assertConstraintCount(string $className, string $propertyName, int $count): void
+    protected static function assertConstraintCount(string $className, string $propertyName, int $count): void
     {
-        $propertyMetadata = $this->getPropertyConstraints($className, $propertyName);
+        $propertyMetadata = self::getPropertyConstraints($className, $propertyName);
 
-        $this->assertCount($count, $propertyMetadata->constraints);
+        self::assertCount($count, $propertyMetadata->constraints);
     }
 
     /**
      * Asserts a certain symfony validation constraint is not defined for property
      */
-    protected function assertConstraintNotForProperty(
+    protected static function assertConstraintNotForProperty(
         string $className,
         string $propertyName,
         string $constraintClassName
     ): void
     {
-        $propertyMetadata = $this->getPropertyConstraints($className, $propertyName);
-        $constraintClassName = $this->getConstraintClassName($constraintClassName);
+        $propertyMetadata = self::getPropertyConstraints($className, $propertyName);
+        $constraintClassName = self::getConstraintClassName($constraintClassName);
 
         $executed = false;
 
         foreach ($propertyMetadata->constraints as $constraint) {
-            $this->assertNotSame(
+            self::assertNotSame(
                 get_class($constraint),
                 $constraintClassName,
                 sprintf(
@@ -93,7 +93,7 @@ trait SymfonyValidationAssertionTrait
             $executed = true;
         }
 
-        $this->assertTrue($executed, 'Internal error. Loop not executed');
+        self::assertTrue($executed, 'Internal error. Loop not executed');
     }
 
     /**
@@ -102,7 +102,7 @@ trait SymfonyValidationAssertionTrait
      * @param string[] $expectedPropertiesMap Key/value map of expected properties
      * @param array|string $expectedValidationGroups
      */
-    protected function assertConstraintForProperty(
+    protected static function assertConstraintForProperty(
         string $className,
         string $propertyName,
         string $constraintClassName,
@@ -111,8 +111,8 @@ trait SymfonyValidationAssertionTrait
         int $propertyIndex = 1
     ): void
     {
-        $propertyMetadata = $this->getPropertyConstraints($className, $propertyName);
-        $constraintClassName = $this->getConstraintClassName($constraintClassName);
+        $propertyMetadata = self::getPropertyConstraints($className, $propertyName);
+        $constraintClassName = self::getConstraintClassName($constraintClassName);
 
         $expectedValidationGroups = $expectedValidationGroups ? (array) $expectedValidationGroups : ['Default'];
 
@@ -132,7 +132,7 @@ trait SymfonyValidationAssertionTrait
                 }
 
                 foreach ($expectedPropertiesMap as $constraintProperty => $value) {
-                    $this->assertObjectHasAttribute(
+                    self::assertObjectHasAttribute(
                         $constraintProperty,
                         $constraint,
                         sprintf(
@@ -143,7 +143,7 @@ trait SymfonyValidationAssertionTrait
                             $propertyName
                         )
                     );
-                    $this->assertSame(
+                    self::assertSame(
                         $value,
                         $constraint->{$constraintProperty},
                         sprintf(
@@ -157,7 +157,7 @@ trait SymfonyValidationAssertionTrait
                     );
                 }
 
-                $this->assertSame(
+                self::assertSame(
                     count($constraint->groups),
                     count($expectedValidationGroups),
                     sprintf(
@@ -171,7 +171,7 @@ trait SymfonyValidationAssertionTrait
                             . 'limited to %s';
 
                 foreach ((array) $expectedValidationGroups as $expectedValidationGroup) {
-                    $this->assertContains(
+                    self::assertContains(
                         $expectedValidationGroup,
                         $constraint->groups,
                         sprintf(
@@ -189,6 +189,6 @@ trait SymfonyValidationAssertionTrait
             }
         }
 
-        $this->assertTrue($matched, 'Constraint ' . $constraintClassName . ' not defined for ' . $className);
+        self::assertTrue($matched, 'Constraint ' . $constraintClassName . ' not defined for ' . $className);
     }
 }

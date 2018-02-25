@@ -3,7 +3,7 @@ namespace InterNations\Component\Testing;
 
 trait TimingTrait
 {
-    protected function assertTiming(float $maxDurationInMs, callable $callable, int $iterations = 20): void
+    protected static function assertTiming(float $maxDurationInMs, callable $callable, int $iterations = 20): void
     {
         $duration = 0;
 
@@ -14,6 +14,6 @@ trait TimingTrait
             $duration += ($end - $start);
         }
 
-        $this->assertLessThanOrEqual($maxDurationInMs, ($duration / $iterations) * 1000);
+        self::assertLessThanOrEqual($maxDurationInMs, ($duration / $iterations) * 1000);
     }
 }

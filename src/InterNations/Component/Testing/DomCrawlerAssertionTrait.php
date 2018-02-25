@@ -6,12 +6,17 @@ use InvalidArgumentException;
 
 trait DomCrawlerAssertionTrait
 {
-    public function assertHtmlSelector(string $expected, string $document, string $selector, string $message = ''): void
+    protected static function assertHtmlSelector(
+        string $expected,
+        string $document,
+        string $selector,
+        string $message = ''
+    ): void
     {
-        $this->assertSame($expected, (new Crawler($document))->filter($selector)->text(), $message);
+        self::assertSame($expected, (new Crawler($document))->filter($selector)->text(), $message);
     }
 
-    public function assertNotHtmlSelector(
+    protected static function assertNotHtmlSelector(
         string $expected,
         string $document,
         string $selector,
@@ -23,20 +28,20 @@ trait DomCrawlerAssertionTrait
         } catch (InvalidArgumentException $e) {
             $value = '';
         }
-        $this->assertNotSame($expected, $value, $message);
+        self::assertNotSame($expected, $value, $message);
     }
 
-    public function assertHtmlSelectorContains(
+    protected static function assertHtmlSelectorContains(
         string $expected,
         string $document,
         string $selector,
         string $message = ''
     ): void
     {
-        $this->assertContains($expected, (new Crawler($document))->filter($selector)->text(), $message);
+        self::assertContains($expected, (new Crawler($document))->filter($selector)->text(), $message);
     }
 
-    public function assertNotHtmlSelectorContains(
+    protected static function assertNotHtmlSelectorContains(
         string $expected,
         string $document,
         string $selector,
@@ -48,10 +53,10 @@ trait DomCrawlerAssertionTrait
         } catch (InvalidArgumentException $e) {
             $value = '';
         }
-        $this->assertNotContains($expected, $value, $message);
+        self::assertNotContains($expected, $value, $message);
     }
 
-    public function assertHtmlSelectorAttribute(
+    protected static function assertHtmlSelectorAttribute(
         string $expected,
         string $document,
         string $selector,
@@ -59,10 +64,10 @@ trait DomCrawlerAssertionTrait
         string $message = ''
     ): void
     {
-        $this->assertSame($expected, (new Crawler($document))->filter($selector)->attr($attribute), $message);
+        self::assertSame($expected, (new Crawler($document))->filter($selector)->attr($attribute), $message);
     }
 
-    public function assertHtmlSelectorAttributeContains(
+    protected static function assertHtmlSelectorAttributeContains(
         string $expected,
         string $document,
         string $selector,
@@ -70,10 +75,10 @@ trait DomCrawlerAssertionTrait
         string $message = ''
     ): void
     {
-        $this->assertContains($expected, (new Crawler($document))->filter($selector)->attr($attribute), $message);
+        self::assertContains($expected, (new Crawler($document))->filter($selector)->attr($attribute), $message);
     }
 
-    public function assertNotHtmlSelectorAttribute(
+    protected static function assertNotHtmlSelectorAttribute(
         string $expected,
         string $document,
         string $selector,
@@ -86,15 +91,20 @@ trait DomCrawlerAssertionTrait
         } catch (InvalidArgumentException $e) {
             $value = '';
         }
-        $this->assertNotSame($expected, $value, $message);
+        self::assertNotSame($expected, $value, $message);
     }
 
-    public function assertXpathSelector(string $expected, string $document, string $xpath, string $message = ''): void
+    protected static function assertXpathSelector(
+        string $expected,
+        string $document,
+        string $xpath,
+        string $message = ''
+    ): void
     {
-        $this->assertSame($expected, (new Crawler($document))->filterXPath($xpath)->text(), $message);
+        self::assertSame($expected, (new Crawler($document))->filterXPath($xpath)->text(), $message);
     }
 
-    public function assertNotXpathSelector(
+    protected static function assertNotXpathSelector(
         string $expected,
         string $document,
         string $xpath,
@@ -106,20 +116,20 @@ trait DomCrawlerAssertionTrait
         } catch (InvalidArgumentException $e) {
             $value = '';
         }
-        $this->assertNotSame($expected, $value, $message);
+        self::assertNotSame($expected, $value, $message);
     }
 
-    public function assertXpathSelectorContains(
+    protected static function assertXpathSelectorContains(
         string $expected,
         string $document,
         string $xpath,
         string $message = ''
     ): void
     {
-        $this->assertContains($expected, (new Crawler($document))->filterXPath($xpath)->text(), $message);
+        self::assertContains($expected, (new Crawler($document))->filterXPath($xpath)->text(), $message);
     }
 
-    public function assertNotXpathSelectorContains(
+    protected static function assertNotXpathSelectorContains(
         string $expected,
         string $document,
         string $xpath,
@@ -131,10 +141,10 @@ trait DomCrawlerAssertionTrait
         } catch (InvalidArgumentException $e) {
             $value = '';
         }
-        $this->assertNotContains($expected, $value, $message);
+        self::assertNotContains($expected, $value, $message);
     }
 
-    public function assertXpathSelectorAttribute(
+    protected static function assertXpathSelectorAttribute(
         string $expected,
         string $document,
         string $xpath,
@@ -142,10 +152,10 @@ trait DomCrawlerAssertionTrait
         string $message = ''
     ): void
     {
-        $this->assertSame($expected, (new Crawler($document))->filterXPath($xpath)->attr($attribute), $message);
+        self::assertSame($expected, (new Crawler($document))->filterXPath($xpath)->attr($attribute), $message);
     }
 
-    public function assertNotXpathSelectorAttribute(
+    protected static function assertNotXpathSelectorAttribute(
         string $expected,
         string $document,
         string $xpath,
@@ -158,6 +168,6 @@ trait DomCrawlerAssertionTrait
         } catch (InvalidArgumentException $e) {
             $value = '';
         }
-        $this->assertNotSame($expected, $value, $message);
+        self::assertNotSame($expected, $value, $message);
     }
 }
