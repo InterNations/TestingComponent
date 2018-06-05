@@ -18,15 +18,17 @@ trait ContainerTestTrait
     /**
      * @param mixed[] $config
      * @param Definition[] $definitions
+     * @param mixed[] $parameters
      */
     protected function createContainer(
         ?string $file = null,
         bool $debug = false,
         array $config = [],
-        array $definitions = []
+        array $definitions = [],
+        array $parameters = []
     ): ContainerBuilder
     {
-        $container = new ContainerBuilder(new ParameterBag(['kernel.debug' => $debug]));
+        $container = new ContainerBuilder(new ParameterBag(['kernel.debug' => $debug] + $parameters));
         $container->registerExtension($this->getContainerExtension());
 
         $this->loadFromFile($container, $file);
@@ -62,7 +64,7 @@ trait ContainerTestTrait
                 $loader = new YamlFileLoader($container, $locator);
                 break;
 
-            case 'xml':
+            case 'php':
                 $loader = new PhpFileLoader($container, $locator);
                 break;
 
