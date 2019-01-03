@@ -157,12 +157,13 @@ trait SymfonyValidationAssertionTrait
                     );
                 }
 
+                $expectedValidationGroups = (array) $expectedValidationGroups;
                 self::assertSame(
                     count($constraint->groups),
                     count($expectedValidationGroups),
                     sprintf(
                         'Number of expected and existing validation groups did not match. Expected %s, got %s',
-                        var_export((array) $expectedValidationGroups, true),
+                        var_export($expectedValidationGroups, true),
                         var_export($constraint->groups, true)
                     )
                 );
@@ -170,7 +171,7 @@ trait SymfonyValidationAssertionTrait
                 $groupError = 'Constraint "%s" for property "%s" is expected to be bound to group "%s", but is '
                             . 'limited to %s';
 
-                foreach ((array) $expectedValidationGroups as $expectedValidationGroup) {
+                foreach ($expectedValidationGroups as $expectedValidationGroup) {
                     self::assertContains(
                         $expectedValidationGroup,
                         $constraint->groups,
