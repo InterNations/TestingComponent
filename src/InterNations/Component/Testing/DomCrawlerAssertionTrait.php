@@ -13,7 +13,7 @@ trait DomCrawlerAssertionTrait
         string $message = ''
     ): void
     {
-        self::assertSame($expected, (new Crawler($document))->filter($selector)->text(), $message);
+        self::assertSame($expected, (new Crawler($document))->filter($selector)->text(null, true), $message);
     }
 
     protected static function assertNotHtmlSelector(
@@ -24,7 +24,7 @@ trait DomCrawlerAssertionTrait
     ): void
     {
         try {
-            $value = (new Crawler($document))->filter($selector)->text();
+            $value = (new Crawler($document))->filter($selector)->text(null, true);
         } catch (InvalidArgumentException $e) {
             $value = '';
         }
@@ -38,7 +38,7 @@ trait DomCrawlerAssertionTrait
         string $message = ''
     ): void
     {
-        self::assertContains($expected, (new Crawler($document))->filter($selector)->text(), $message);
+        self::assertContains($expected, (new Crawler($document))->filter($selector)->text(null, true), $message);
     }
 
     protected static function assertNotHtmlSelectorContains(
@@ -49,7 +49,7 @@ trait DomCrawlerAssertionTrait
     ): void
     {
         try {
-            $value = (new Crawler($document))->filter($selector)->text();
+            $value = (new Crawler($document))->filter($selector)->text(null, true);
         } catch (InvalidArgumentException $e) {
             $value = '';
         }
@@ -101,7 +101,7 @@ trait DomCrawlerAssertionTrait
         string $message = ''
     ): void
     {
-        self::assertSame($expected, (new Crawler($document))->filterXPath($xpath)->text(), $message);
+        self::assertSame($expected, (new Crawler($document))->filterXPath($xpath)->text(null, true), $message);
     }
 
     protected static function assertNotXpathSelector(
@@ -112,7 +112,7 @@ trait DomCrawlerAssertionTrait
     ): void
     {
         try {
-            $value = (new Crawler($document))->filterXPath($xpath)->text();
+            $value = (new Crawler($document))->filterXPath($xpath)->text(null, true);
         } catch (InvalidArgumentException $e) {
             $value = '';
         }
@@ -126,7 +126,7 @@ trait DomCrawlerAssertionTrait
         string $message = ''
     ): void
     {
-        self::assertContains($expected, (new Crawler($document))->filterXPath($xpath)->text(), $message);
+        self::assertContains($expected, (new Crawler($document))->filterXPath($xpath)->text(null, true), $message);
     }
 
     protected static function assertNotXpathSelectorContains(
@@ -137,7 +137,7 @@ trait DomCrawlerAssertionTrait
     ): void
     {
         try {
-            $value = (new Crawler($document))->filterXPath($xpath)->text();
+            $value = (new Crawler($document))->filterXPath($xpath)->text(null, true);
         } catch (InvalidArgumentException $e) {
             $value = '';
         }
