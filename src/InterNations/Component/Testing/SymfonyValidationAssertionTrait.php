@@ -2,6 +2,7 @@
 namespace InterNations\Component\Testing;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Mapping\ClassMetadataInterface;
 use Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory;
 use Symfony\Component\Validator\Mapping\Loader\AnnotationLoader;
@@ -111,9 +112,6 @@ trait SymfonyValidationAssertionTrait
         int $propertyIndex = 1
     ): void
     {
-        $propertyMetadata = self::getPropertyConstraints($className, $propertyName);
-        $constraintClassName = self::getConstraintClassName($constraintClassName);
-
         $expectedValidationGroups = $expectedValidationGroups ? (array) $expectedValidationGroups : ['Default'];
 
         if (in_array('Default', $expectedValidationGroups, true)) {
@@ -122,6 +120,74 @@ trait SymfonyValidationAssertionTrait
         }
 
         $matched = false;
+        $constraint = self::getPropertyConstraint($className, $propertyName, $constraintClassName, $propertyIndex);
+        self::assertNotNull($constraint, 'Constraint %s not defined for %s:$%s at index %d', $constraintClassName, $className, $propertyName, $propertyIndex);
+
+        foreach ($expectedPropertiesMap as $constraintProperty => $value) {
+            self::assertObjectHasAttribute(
+                $constraintProperty,
+                $constraint,
+                sprintf(
+                    'Parameter "%s" expected but not defined in constraint "%s" for "%s::$%s"',
+                    $constraintProperty,
+                    $constraintClassName,
+                    $className,
+                    $propertyName
+                )
+            );
+            self::assertSame(
+                $value,
+                $constraint->{$constraintProperty},
+                sprintf(
+                    'Property "%s" did not match expected value "%s" defined in constraint "%s" for "%s::$%s"',
+                    $constraintProperty,
+                    var_export($value, true),
+                    $constraintClassName,
+                    $className,
+                    $propertyName
+                )
+            );
+        }
+
+        $expectedValidationGroups = (array) $expectedValidationGroups;
+        self::assertSame(
+            count($constraint->groups),
+            count($expectedValidationGroups),
+            sprintf(
+                'Number of expected and existing validation groups did not match. Expected %s, got %s',
+                var_export($expectedValidationGroups, true),
+                var_export($constraint->groups, true)
+            )
+        );
+
+        $groupError = 'Constraint "%s" for property "%s" is expected to be bound to group "%s", but is '
+            . 'limited to %s';
+
+        foreach ($expectedValidationGroups as $expectedValidationGroup) {
+            self::assertContains(
+                $expectedValidationGroup,
+                $constraint->groups,
+                sprintf(
+                    $groupError,
+                    $constraintClassName,
+                    $propertyName,
+                    $expectedValidationGroup,
+                    var_export($constraint->groups, true)
+                )
+            );
+        }
+    }
+
+    protected static function getPropertyConstraint(
+        string $className,
+        string $propertyName,
+        string $constraintClassName,
+        int $propertyIndex = 1
+    ): ?Constraint
+    {
+        $propertyMetadata = self::getPropertyConstraints($className, $propertyName);
+        $constraintClassName = self::getConstraintClassName($constraintClassName);
+
         $currentPropertyIndex = 1;
 
         foreach ($propertyMetadata->constraints as $constraint) {
@@ -131,65 +197,10 @@ trait SymfonyValidationAssertionTrait
                     continue;
                 }
 
-                foreach ($expectedPropertiesMap as $constraintProperty => $value) {
-                    self::assertObjectHasAttribute(
-                        $constraintProperty,
-                        $constraint,
-                        sprintf(
-                            'Parameter "%s" expected but not defined in constraint "%s" for "%s::$%s"',
-                            $constraintProperty,
-                            $constraintClassName,
-                            $className,
-                            $propertyName
-                        )
-                    );
-                    self::assertSame(
-                        $value,
-                        $constraint->{$constraintProperty},
-                        sprintf(
-                            'Property "%s" did not match expected value "%s" defined in constraint "%s" for "%s::$%s"',
-                            $constraintProperty,
-                            var_export($value, true),
-                            $constraintClassName,
-                            $className,
-                            $propertyName
-                        )
-                    );
-                }
-
-                $expectedValidationGroups = (array) $expectedValidationGroups;
-                self::assertSame(
-                    count($constraint->groups),
-                    count($expectedValidationGroups),
-                    sprintf(
-                        'Number of expected and existing validation groups did not match. Expected %s, got %s',
-                        var_export($expectedValidationGroups, true),
-                        var_export($constraint->groups, true)
-                    )
-                );
-
-                $groupError = 'Constraint "%s" for property "%s" is expected to be bound to group "%s", but is '
-                            . 'limited to %s';
-
-                foreach ($expectedValidationGroups as $expectedValidationGroup) {
-                    self::assertContains(
-                        $expectedValidationGroup,
-                        $constraint->groups,
-                        sprintf(
-                            $groupError,
-                            $constraintClassName,
-                            $propertyName,
-                            $expectedValidationGroup,
-                            var_export($constraint->groups, true)
-                        )
-                    );
-                }
-
-                $matched = true;
-                break;
+                return $constraint;
             }
         }
 
-        self::assertTrue($matched, 'Constraint ' . $constraintClassName . ' not defined for ' . $className);
+        return null;
     }
 }
