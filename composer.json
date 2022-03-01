@@ -30,7 +30,7 @@
         }
     },
     "require-dev": {
-        "symfony/dom-crawler": "~3",
+        "symfony/dom-crawler": "~5",
         "symfony/css-selector": "~3",
         "internations/kodierungsregelwerksammlung": "~0.35",
         "phpunit/phpunit": "~7 || ~8 || ~9",
