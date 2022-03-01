@@ -38,7 +38,7 @@ trait DomCrawlerAssertionTrait
         string $message = ''
     ): void
     {
-        self::assertContains($expected, (new Crawler($document))->filter($selector)->text(null, true), $message);
+        self::assertStringContainsString($expected, (new Crawler($document))->filter($selector)->text(null, true), $message);
     }
 
     protected static function assertNotHtmlSelectorContains(
@@ -53,7 +53,7 @@ trait DomCrawlerAssertionTrait
         } catch (InvalidArgumentException $e) {
             $value = '';
         }
-        self::assertNotContains($expected, $value, $message);
+        self::assertNotContains($expected, [$value], $message);
     }
 
     protected static function assertHtmlSelectorAttribute(
@@ -75,7 +75,7 @@ trait DomCrawlerAssertionTrait
         string $message = ''
     ): void
     {
-        self::assertContains($expected, (new Crawler($document))->filter($selector)->attr($attribute), $message);
+        self::assertContains($expected, [(new Crawler($document))->filter($selector)->attr($attribute)], $message);
     }
 
     protected static function assertNotHtmlSelectorAttribute(
@@ -126,7 +126,7 @@ trait DomCrawlerAssertionTrait
         string $message = ''
     ): void
     {
-        self::assertContains($expected, (new Crawler($document))->filterXPath($xpath)->text(null, true), $message);
+        self::assertStringContainsString($expected, (new Crawler($document))->filterXPath($xpath)->text(null, true), $message);
     }
 
     protected static function assertNotXpathSelectorContains(
@@ -141,7 +141,7 @@ trait DomCrawlerAssertionTrait
         } catch (InvalidArgumentException $e) {
             $value = '';
         }
-        self::assertNotContains($expected, $value, $message);
+        self::assertNotContains($expected, [$value], $message);
     }
 
     protected static function assertXpathSelectorAttribute(
