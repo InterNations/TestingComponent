@@ -10,7 +10,7 @@ class DomCrawlerAssertionTraitTest extends AbstractTestCase
 
     private $fixture;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->fixture = file_get_contents(__DIR__ . '/Fixtures/DomCrawlerFixture.html');
     }
