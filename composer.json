@@ -47,5 +47,9 @@
     },
     "require": {
         "php": "~7.1"
-    }
+    },
+    "scripts": {
+        "tests": "phpunit --exclude-group performance",
+        "coding-style": "phpcs --standard=vendor/internations/kodierungsregelwerksammlung/ruleset.xml --exclude=InterNations.Syntax.MethodTypeHints ./src/"
+  }
 }
