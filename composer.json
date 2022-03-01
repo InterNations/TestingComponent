@@ -46,7 +46,7 @@
         "symfony/css-selector": "Dependency for symfony/dom-crawler"
     },
     "require": {
-        "php": "~7.1"
+        "php": ">=7.1.3"
     },
     "scripts": {
         "tests": "phpunit",
