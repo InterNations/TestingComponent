@@ -32,7 +32,7 @@
     "require-dev": {
         "symfony/dom-crawler": "~3",
         "symfony/css-selector": "~3",
-        "internations/kodierungsregelwerksammlung": "dev-master",
+        "internations/kodierungsregelwerksammlung": "^0.35.0",
         "phpunit/phpunit": "~6",
         "doctrine/annotations": "^1.2",
         "symfony/validator": "~3",
@@ -47,5 +47,9 @@
     },
     "require": {
         "php": "~7.1"
-    }
+    },
+    "scripts": {
+        "tests": "phpunit",
+        "coding-style": "phpcs --standard=vendor/internations/kodierungsregelwerksammlung/ruleset.xml --exclude=InterNations.Syntax.MethodTypeHints ./src/"
+  }
 }
